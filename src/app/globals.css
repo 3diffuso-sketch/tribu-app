@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+/* ============================================================
+   TribU (Roots) — Design System
+   "La intimidad empieza en comunidad"
+   ============================================================ */
+
+:root {
+  /* ── Brand Colors (from Roots identity) ── */
+  --roots-red: #C4442A;
+  --roots-red-light: #E05A3E;
+  --roots-red-dark: #9A3520;
+  --roots-orange: #E8915A;
+  --roots-orange-light: #F2A96E;
+  --roots-brown: #5C3D2E;
+  --roots-brown-light: #8B6B5A;
+  --roots-brown-dark: #3E2A1E;
+  --roots-green: #6B7B3A;
+  --roots-green-light: #8FA04E;
+  --roots-cream: #FFF8F0;
+  --roots-cream-dark: #F5EDE0;
+  --roots-sand: #E8D5C0;
+  --roots-charcoal: #2C2420;
+  --roots-warm-white: #FFFAF5;
+
+  /* ── Semantic tokens ── */
+  --background: var(--roots-warm-white);
+  --background-alt: var(--roots-cream);
+  --foreground: var(--roots-charcoal);
+  --foreground-muted: #7A6B60;
+  --accent: var(--roots-red);
+  --accent-hover: var(--roots-red-light);
+  --success: var(--roots-green);
+  --warning: var(--roots-orange);
+  --card-bg: #FFFFFF;
+  --card-border: rgba(92, 61, 46, 0.08);
+  --card-shadow: 0 2px 16px rgba(92, 61, 46, 0.06);
+  --card-shadow-hover: 0 8px 32px rgba(92, 61, 46, 0.12);
+  --nav-bg: rgba(255, 250, 245, 0.85);
+  --overlay: rgba(44, 36, 32, 0.5);
+
+  /* ── Radius ── */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* ── Transition ── */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 150ms var(--ease-out-expo);
+  --transition-base: 250ms var(--ease-out-expo);
+  --transition-slow: 400ms var(--ease-out-expo);
+}
+
+/* ── Tailwind v4 theme ── */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-roots-red: var(--roots-red);
+  --color-roots-red-light: var(--roots-red-light);
+  --color-roots-red-dark: var(--roots-red-dark);
+  --color-roots-orange: var(--roots-orange);
+  --color-roots-orange-light: var(--roots-orange-light);
+  --color-roots-brown: var(--roots-brown);
+  --color-roots-brown-light: var(--roots-brown-light);
+  --color-roots-brown-dark: var(--roots-brown-dark);
+  --color-roots-green: var(--roots-green);
+  --color-roots-green-light: var(--roots-green-light);
+  --color-roots-cream: var(--roots-cream);
+  --color-roots-cream-dark: var(--roots-cream-dark);
+  --color-roots-sand: var(--roots-sand);
+  --color-roots-charcoal: var(--roots-charcoal);
+  --color-roots-warm-white: var(--roots-warm-white);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-card-bg: var(--card-bg);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --font-sans: 'Outfit', system-ui, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+}
+
+/* ── Global base ── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--roots-red);
+  color: white;
+}
+
+/* ── Scrollbar styling ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--roots-sand);
+  border-radius: var(--radius-full);
+}
+
+/* ── Utility: Glassmorphism card ── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: var(--card-shadow);
+  border-radius: var(--radius-lg);
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+.glass-card:hover {
+  box-shadow: var(--card-shadow-hover);
+  transform: translateY(-2px);
+}
+
+/* ── Utility: Gradient text ── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--roots-red), var(--roots-orange));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Utility: Shimmer loading ── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, var(--roots-cream-dark) 25%, var(--roots-cream) 50%, var(--roots-cream-dark) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ── Utility: Pulse glow for stars ── */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(196, 68, 42, 0.3); }
+  50% { box-shadow: 0 0 16px 4px rgba(196, 68, 42, 0.15); }
+}
+.star-pulse {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ── Utility: Float animation for cards ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ── Badge pill ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+.badge-red {
+  background: rgba(196, 68, 42, 0.1);
+  color: var(--roots-red);
+}
+.badge-green {
+  background: rgba(107, 123, 58, 0.1);
+  color: var(--roots-green);
+}
+.badge-orange {
+  background: rgba(232, 145, 90, 0.12);
+  color: #C07030;
+}
+
+/* ── Bottom navigation (mobile) ── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--nav-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--card-border);
+  padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+}
+
+/* ── Page wrapper (accounts for bottom nav) ── */
+.page-content {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom));
+}
+
+/* ── Locked overlay ── */
+.locked-overlay {
+  position: relative;
+  overflow: hidden;
+}
+.locked-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255, 250, 245, 0.6) 40%,
+    rgba(255, 250, 245, 0.95) 100%
+  );
+  pointer-events: none;
+  z-index: 10;
+  border-radius: inherit;
+}
