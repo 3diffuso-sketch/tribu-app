@@ -34,63 +34,64 @@ export function ChatWindow({ messages, currentUserId, onSend, recipientName }: C
   return (
     <div className="flex flex-col h-[500px] glass-card overflow-hidden">
       {/* Chat Header */}
-      <div className="p-4 border-b border-roots-sand/30 bg-roots-cream/50 flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-roots-sand/50 flex items-center justify-center text-roots-charcoal shrink-0">
-          <UserIcon size={20} />
+      <div className="p-4 border-b border-roots-sand/40 bg-white flex items-center gap-3 shadow-sm z-10">
+        <div className="w-11 h-11 rounded-full bg-gradient-to-tr from-roots-sand to-roots-cream-dark flex items-center justify-center text-roots-brown shrink-0 shadow-inner">
+          <UserIcon size={22} />
         </div>
         <div>
-          <h3 className="font-semibold text-roots-charcoal">{recipientName}</h3>
-          <p className="text-xs text-roots-green font-medium flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-roots-green inline-block"></span> En línea
+          <h3 className="font-display font-bold text-roots-charcoal leading-tight">{recipientName}</h3>
+          <p className="text-xs text-roots-green font-semibold flex items-center gap-1.5 mt-0.5">
+            <span className="w-2 h-2 rounded-full bg-roots-green inline-block shadow-[0_0_8px_rgba(107,123,58,0.6)]"></span> En línea
           </p>
         </div>
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
+      <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-4 bg-[var(--roots-warm-white)]/50">
         {messages.map((msg, idx) => {
           const isMe = msg.senderId === currentUserId;
           return (
             <motion.div
               key={msg.id || idx}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`flex flex-col max-w-[80%] ${isMe ? "self-end items-end" : "self-start items-start"}`}
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.2 }}
+              className={`flex flex-col max-w-[85%] ${isMe ? "self-end items-end" : "self-start items-start"}`}
             >
               <div
-                className={`px-4 py-2.5 rounded-2xl ${
+                className={`px-4 py-2.5 rounded-[20px] shadow-sm ${
                   isMe
-                    ? "bg-roots-red text-white rounded-tr-sm"
-                    : "bg-roots-cream text-roots-charcoal rounded-tl-sm border border-roots-sand/30"
+                    ? "bg-gradient-to-br from-roots-charcoal to-roots-brown-dark text-white rounded-tr-[4px]"
+                    : "bg-white text-roots-charcoal rounded-tl-[4px] border border-roots-sand/40"
                 }`}
               >
-                <p className="text-sm">{msg.content}</p>
+                <p className="text-[15px] leading-relaxed">{msg.content}</p>
               </div>
-              <span className="text-[10px] text-foreground-muted mt-1 px-1">
+              <span className="text-[11px] font-medium text-foreground-muted mt-1 px-1.5 opacity-70">
                 {msg.timestamp}
               </span>
             </motion.div>
           );
         })}
-        <div ref={messagesEndRef} />
+        <div ref={messagesEndRef} className="h-2" />
       </div>
 
       {/* Input Area */}
-      <div className="p-3 bg-white border-t border-roots-sand/30">
+      <div className="p-4 bg-white border-t border-roots-sand/40 shadow-[0_-4px_20px_rgba(0,0,0,0.02)]">
         <form onSubmit={handleSend} className="flex items-center gap-2 relative">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Escribe un mensaje..."
-            className="w-full bg-roots-cream/50 border border-roots-sand/40 rounded-full py-2.5 pl-4 pr-12 text-sm focus:outline-none focus:border-roots-red/50 transition-colors"
+            placeholder="Escribe tu mensaje aquí..."
+            className="w-full bg-roots-warm-white border-2 border-roots-sand/30 rounded-full py-3.5 pl-5 pr-14 text-[15px] text-roots-charcoal placeholder:text-foreground-muted/60 focus:outline-none focus:border-roots-red/40 focus:bg-white transition-all shadow-inner"
           />
           <button
             type="submit"
             disabled={!inputValue.trim()}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-roots-red text-white flex items-center justify-center disabled:opacity-50 disabled:bg-roots-sand transition-colors"
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-gradient-to-r from-roots-red to-roots-orange text-white flex items-center justify-center disabled:opacity-50 disabled:from-roots-sand disabled:to-roots-sand transition-all shadow-md hover:shadow-lg hover:scale-105 active:scale-95"
           >
-            <Send size={14} className="ml-0.5" />
+            <Send size={18} className="ml-0.5" />
           </button>
         </form>
       </div>

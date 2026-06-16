@@ -18,6 +18,8 @@ export default function EventDetailPage({
   const { id } = use(params);
   const event = mockEvents.find((e) => e.id === id);
   const [isAttending, setIsAttending] = useState(false);
+  const [showJoinModal, setShowJoinModal] = useState(false);
+  const [joinData, setJoinData] = useState({ name: "", anonymous: false, gender: "" });
   const [showQR, setShowQR] = useState(false);
   const [checkedIn, setCheckedIn] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -87,7 +89,7 @@ export default function EventDetailPage({
           </div>
 
           <div className="mt-4 flex flex-wrap gap-2">
-            {event.tags.map((tag) => (<span key={tag} className="text-xs font-medium px-3 py-1 rounded-full bg-roots-cream-dark text-roots-brown-light">{tag}</span>))}
+            {event.tags.map((tag) => (<span key={tag} className="text-xs font-semibold px-3 py-1 rounded-full bg-roots-sand/30 text-roots-brown">{tag}</span>))}
           </div>
 
           {/* Attendance */}
@@ -102,6 +104,70 @@ export default function EventDetailPage({
           </div>
         </motion.div>
       </div>
+
+      {/* Join Event Modal */}
+      <AnimatePresence>
+        {showJoinModal && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-6" style={{ background: "var(--overlay)" }} onClick={() => setShowJoinModal(false)}>
+            <motion.div initial={{ scale: 0.85 }} animate={{ scale: 1 }} exit={{ scale: 0.85 }} onClick={(e) => e.stopPropagation()} className="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl">
+              <h3 className="font-display text-xl font-bold text-roots-charcoal mb-4">Únete al evento</h3>
+              
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label className="flex items-center justify-between text-sm font-medium text-roots-charcoal mb-1.5">
+                    <span>Tu nombre (opcional)</span>
+                    <label className="flex items-center gap-2 text-xs font-normal cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={joinData.anonymous}
+                        onChange={(e) => setJoinData({...joinData, anonymous: e.target.checked, name: e.target.checked ? "Anónimo" : ""})}
+                        className="rounded border-roots-sand text-roots-red focus:ring-roots-red"
+                      />
+                      Asistir como anónimo
+                    </label>
+                  </label>
+                  <input
+                    type="text"
+                    disabled={joinData.anonymous}
+                    value={joinData.name}
+                    onChange={(e) => setJoinData({...joinData, name: e.target.value})}
+                    placeholder={joinData.anonymous ? "Anónimo" : "Escribe tu nombre"}
+                    className="w-full bg-roots-cream/50 border border-roots-sand/40 rounded-xl py-2.5 px-3 text-sm focus:outline-none focus:border-roots-red/50 disabled:opacity-50"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-roots-charcoal mb-1.5">Sexo (opcional)</label>
+                  <div className="flex gap-2">
+                    {['Mujer', 'Hombre', 'Otro', 'No decir'].map(g => (
+                      <button 
+                        key={g}
+                        onClick={() => setJoinData({...joinData, gender: g})}
+                        className={`flex-1 py-2 px-1 rounded-lg text-[11px] font-medium border transition-colors ${joinData.gender === g ? 'bg-roots-charcoal text-white border-roots-charcoal' : 'bg-roots-cream/30 text-roots-charcoal border-roots-sand hover:bg-roots-cream'}`}
+                      >
+                        {g}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex gap-3">
+                <button onClick={() => setShowJoinModal(false)} className="flex-1 py-3 rounded-xl bg-roots-cream text-roots-charcoal font-semibold text-sm">Cancelar</button>
+                <button 
+                  onClick={() => {
+                    setIsAttending(true);
+                    setShowJoinModal(false);
+                  }} 
+                  className="flex-1 py-3 rounded-xl bg-roots-red text-white font-semibold text-sm"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* QR Modal */}
       <AnimatePresence>
@@ -148,7 +214,7 @@ export default function EventDetailPage({
       <div className="sticky bottom-0 left-0 right-0 p-4 pb-[calc(1rem+80px+env(safe-area-inset-bottom))] z-30">
         <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }} className="flex gap-3">
           {!isAttending ? (
-            <button onClick={() => setIsAttending(true)} className="flex-1 py-4 rounded-2xl bg-roots-red text-white font-semibold text-base shadow-lg shadow-roots-red/20 active:scale-[0.98] flex items-center justify-center gap-2 transition-all"><Users size={18} />Asistir al evento</button>
+            <button onClick={() => setShowJoinModal(true)} className="flex-1 py-4 rounded-2xl bg-roots-red text-white font-semibold text-base shadow-lg shadow-roots-red/20 active:scale-[0.98] flex items-center justify-center gap-2 transition-all"><Users size={18} />Asistir al evento</button>
           ) : (
             <>
               <button onClick={() => setShowQR(true)} className="flex-1 py-4 rounded-2xl bg-roots-charcoal text-white font-semibold text-base shadow-lg active:scale-[0.98] flex items-center justify-center gap-2 transition-all"><QrCode size={18} />Check-in QR</button>

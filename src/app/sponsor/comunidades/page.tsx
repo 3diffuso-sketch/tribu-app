@@ -73,12 +73,20 @@ export default function SponsorComunidadesPage() {
                 </div>
               </div>
 
-              <Link 
-                href={`/sponsor/chat?id=${community.guiaId || 'new'}`}
-                className="mt-4 w-full bg-roots-green/10 text-roots-green font-semibold py-2 rounded-lg text-center text-sm hover:bg-roots-green/20 transition-colors"
-              >
-                Contactar Guía
-              </Link>
+              <div className="mt-4 grid grid-cols-2 gap-2">
+                <Link 
+                  href={`/sponsor/chat?id=${community.guiaId || 'new'}&role=guia`}
+                  className="w-full bg-roots-green/10 text-roots-green font-semibold py-2 rounded-lg text-center text-[13px] hover:bg-roots-green/20 transition-colors"
+                >
+                  Contactar Guía
+                </Link>
+                <Link 
+                  href={`/sponsor/chat?id=${community.id}&role=crew`}
+                  className="w-full bg-roots-orange/10 text-roots-orange font-semibold py-2 rounded-lg text-center text-[13px] hover:bg-roots-orange/20 transition-colors"
+                >
+                  Contactar Crew
+                </Link>
+              </div>
             </div>
           </motion.div>
         ))}

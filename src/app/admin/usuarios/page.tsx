@@ -126,9 +126,18 @@ export default function AdminUsuariosPage() {
           searchable={true}
           searchPlaceholder="Buscar por nombre..."
           actions={(row) => (
-            <button className="p-1.5 rounded-md hover:bg-roots-sand/30 text-foreground-muted transition-colors">
-              <MoreVertical size={16} />
-            </button>
+            <div className="flex items-center justify-end gap-1">
+              <button 
+                onClick={() => alert(`Usuario ${row.name} bloqueado.`)}
+                className="px-2 py-1.5 rounded text-[10px] font-bold bg-roots-red/10 text-roots-red hover:bg-roots-red/20 transition-colors"
+                title="Bloquear Usuario"
+              >
+                Bloquear
+              </button>
+              <button className="p-1.5 rounded-md hover:bg-roots-sand/30 text-foreground-muted transition-colors">
+                <MoreVertical size={16} />
+              </button>
+            </div>
           )}
         />
       </motion.div>
