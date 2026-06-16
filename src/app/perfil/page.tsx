@@ -1,129 +1,119 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Star, Calendar, MapPin, TrendingUp, ChevronRight, Lock, Settings, Award, Compass } from "lucide-react";
-import { mockUser } from "@/lib/mock-data";
-import { LEVELS } from "@/lib/types";
+import { User, Settings, Award, Calendar, Bell, ChevronRight, LogOut } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
+import Link from "next/link";
 
-const levelEntries = Object.entries(LEVELS) as [string, typeof LEVELS[keyof typeof LEVELS]][];
+export default function PerfilPage() {
+  const { user, switchRole } = useAuth();
 
-export default function ProfilePage() {
-  const user = mockUser;
-  const currentLevel = LEVELS[user.level as keyof typeof LEVELS];
-  const nextLevel = LEVELS[(user.level + 1) as keyof typeof LEVELS] ?? null;
-  const starsToNext = nextLevel ? nextLevel.minStars - user.stars : 0;
+  const insignias = [
+    { id: 1, name: "Fundador", icon: "👑", color: "bg-yellow-100 text-yellow-700" },
+    { id: 2, name: "Deportista", icon: "🏃", color: "bg-green-100 text-green-700" },
+    { id: 3, name: "Activo", icon: "🔥", color: "bg-orange-100 text-orange-700" },
+  ];
+
+  const estadisticas = [
+    { label: "Eventos", value: 12 },
+    { label: "Comunidades", value: 3 },
+    { label: "Conexiones", value: 45 },
+  ];
+
+  const intereses = ["Running", "Yoga", "Networking", "Tecnología", "Fotografía"];
 
   return (
-    <div className="min-h-screen pb-4">
-      {/* Header */}
-      <header className="relative px-5 pt-14 pb-8 overflow-hidden">
-        <div className="absolute inset-0 -z-10" style={{ background: "linear-gradient(135deg, rgba(196,68,42,0.08) 0%, rgba(232,145,90,0.04) 50%, transparent 100%)" }} />
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="font-display text-2xl font-bold text-roots-charcoal">Mi Perfil</h1>
-          <button className="w-10 h-10 rounded-full bg-white border border-roots-sand/40 flex items-center justify-center shadow-sm"><Settings size={18} className="text-roots-brown" /></button>
+    <div className="flex flex-col gap-6 px-5 pb-24 pt-6 max-w-lg mx-auto min-h-screen">
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-between items-center">
+        <h1 className="text-2xl font-display font-bold text-roots-charcoal">Mi Perfil</h1>
+        <button className="p-2 bg-roots-cream rounded-full text-roots-charcoal hover:bg-roots-sand/50 transition-colors">
+          <Settings size={20} />
+        </button>
+      </motion.div>
+
+      {/* Profile Header */}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="flex flex-col items-center">
+        <div className="w-24 h-24 rounded-full bg-roots-sand/50 mb-3 overflow-hidden border-4 border-white shadow-sm flex items-center justify-center text-3xl font-display font-bold text-roots-charcoal">
+          {user.avatar ? <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" /> : user.name.charAt(0)}
         </div>
+        <h2 className="text-xl font-bold text-roots-charcoal">{user.name}</h2>
+        <p className="text-sm text-foreground-muted capitalize mt-1 px-3 py-0.5 rounded-full bg-roots-cream border border-roots-sand/50">
+          Rol actual: {user.role}
+        </p>
+      </motion.div>
 
-        {/* Avatar + Info */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-4">
-          <div className="relative">
-            <div className="w-20 h-20 rounded-full bg-roots-sand flex items-center justify-center text-3xl font-bold text-roots-brown border-[3px] border-white shadow-lg">{user.name.charAt(0)}</div>
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: "spring" }} className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-roots-orange flex items-center justify-center border-2 border-white">
-              <span className="text-[10px] font-bold text-white">{user.level}</span>
-            </motion.div>
+      {/* Stats */}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass-card flex justify-around p-4">
+        {estadisticas.map((stat, i) => (
+          <div key={i} className="flex flex-col items-center text-center">
+            <span className="text-xl font-bold text-roots-charcoal">{stat.value}</span>
+            <span className="text-[10px] uppercase font-semibold text-foreground-muted">{stat.label}</span>
           </div>
-          <div>
-            <h2 className="text-xl font-bold text-roots-charcoal">{user.name}</h2>
-            <div className="flex items-center gap-1 text-sm text-foreground-muted mt-0.5"><MapPin size={14} />{user.city}</div>
-            <p className="text-xs text-foreground-muted mt-1">Miembro desde {user.joinedDate}</p>
-          </div>
-        </motion.div>
-      </header>
+        ))}
+      </motion.div>
 
-      <div className="px-5 space-y-5">
-        {/* Stats */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="grid grid-cols-3 gap-3">
-          {[
-            { icon: Star, value: user.stars, label: "Estrellas", color: "text-roots-orange", fill: true },
-            { icon: Calendar, value: user.eventsAttended, label: "Eventos", color: "text-roots-red", fill: false },
-            { icon: TrendingUp, value: `Nivel ${user.level}`, label: currentLevel.name, color: "text-roots-green", fill: false },
-          ].map(({ icon: Icon, value, label, color, fill }) => (
-            <div key={label} className="glass-card p-4 text-center">
-              <Icon size={22} className={`mx-auto mb-1.5 ${color} ${fill ? "fill-roots-orange" : ""}`} />
-              <p className="text-lg font-bold text-roots-charcoal">{value}</p>
-              <p className="text-[11px] text-foreground-muted">{label}</p>
+      {/* Insignias */}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass-card p-5">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-semibold text-roots-charcoal flex items-center gap-2">
+            <Award size={18} className="text-roots-orange" />
+            Mis Insignias
+          </h3>
+          <span className="text-xs text-roots-green font-medium">Ver todas</span>
+        </div>
+        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+          {insignias.map(insignia => (
+            <div key={insignia.id} className={`flex flex-col items-center justify-center min-w-[80px] p-3 rounded-xl ${insignia.color}`}>
+              <span className="text-2xl mb-1">{insignia.icon}</span>
+              <span className="text-[10px] font-bold uppercase">{insignia.name}</span>
             </div>
           ))}
-        </motion.div>
+        </div>
+      </motion.div>
 
-        {/* Level progress */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="glass-card p-5">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold text-roots-charcoal flex items-center gap-2"><Award size={18} className="text-roots-orange" />Progreso de nivel</h3>
-            {nextLevel && <span className="text-xs font-medium text-roots-orange">{starsToNext} ★ para nivel {user.level + 1}</span>}
-          </div>
-
-          {/* Level steps */}
-          <div className="space-y-3">
-            {levelEntries.map(([lvl, info]) => {
-              const lvlNum = parseInt(lvl);
-              const isUnlocked = user.level >= lvlNum;
-              const isCurrent = user.level === lvlNum;
-              return (
-                <div key={lvl} className={`flex items-center gap-3 p-3 rounded-xl transition-colors ${isCurrent ? "bg-roots-cream" : "bg-transparent"}`}>
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${isUnlocked ? "bg-roots-green text-white" : "bg-roots-cream-dark text-foreground-muted"}`}>
-                    {isUnlocked ? "✓" : <Lock size={14} />}
-                  </div>
-                  <div className="flex-1">
-                    <p className={`text-sm font-semibold ${isUnlocked ? "text-roots-charcoal" : "text-foreground-muted"}`}>Nivel {lvl}: {info.name}</p>
-                    <p className="text-xs text-foreground-muted">{info.description}</p>
-                  </div>
-                  <span className="text-xs text-foreground-muted">{info.minStars} ★</span>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Stars progress bar */}
-          {nextLevel && (
-            <div className="mt-4">
-              <div className="flex justify-between text-xs text-foreground-muted mb-1.5">
-                <span>{user.stars} ★</span><span>{nextLevel.minStars} ★</span>
-              </div>
-              <div className="w-full h-2.5 bg-roots-cream-dark rounded-full overflow-hidden">
-                <motion.div className="h-full rounded-full" style={{ background: "linear-gradient(90deg, var(--roots-orange), var(--roots-red))" }} initial={{ width: 0 }} animate={{ width: `${(user.stars / nextLevel.minStars) * 100}%` }} transition={{ delay: 0.5, duration: 1 }} />
-              </div>
-            </div>
-          )}
-        </motion.div>
-
-        {/* Bio */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass-card p-5">
-          <h3 className="font-semibold text-roots-charcoal mb-2">Sobre mí</h3>
-          <p className="text-sm text-foreground-muted leading-relaxed">{user.bio}</p>
-        </motion.div>
-
-        {/* Interests */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="glass-card p-5">
-          <h3 className="font-semibold text-roots-charcoal mb-3">Mis intereses</h3>
-          <div className="flex flex-wrap gap-2">
-            {user.interests.map((interest) => (<span key={interest} className="badge badge-orange">{interest}</span>))}
-          </div>
-        </motion.div>
-
-        {/* Quick links */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="glass-card overflow-hidden divide-y divide-roots-sand/20">
-          {[
-            { label: "Mis eventos", icon: Compass, href: "/" },
-            { label: "Configuración", icon: Settings, href: "#" },
-          ].map(({ label, icon: Icon }) => (
-            <button key={label} className="flex items-center gap-3 w-full p-4 text-left hover:bg-roots-cream/50 transition-colors">
-              <Icon size={18} className="text-roots-brown" />
-              <span className="flex-1 text-sm font-medium text-roots-charcoal">{label}</span>
-              <ChevronRight size={16} className="text-foreground-muted" />
-            </button>
+      {/* Intereses */}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="glass-card p-5">
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-semibold text-roots-charcoal">Intereses</h3>
+          <button className="text-xs text-roots-green font-medium hover:underline">Editar</button>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {intereses.map(interes => (
+            <span key={interes} className="px-3 py-1 bg-white border border-roots-sand/50 rounded-full text-xs font-medium text-roots-charcoal">
+              {interes}
+            </span>
           ))}
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
+
+      {/* Menu Options */}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="flex flex-col gap-2">
+        <Link href="/mis-eventos" className="glass-card p-4 flex items-center justify-between hover:bg-roots-cream/50 transition-colors">
+          <div className="flex items-center gap-3 text-roots-charcoal font-medium">
+            <Calendar size={18} className="text-roots-brown" />
+            Historial de Eventos
+          </div>
+          <ChevronRight size={18} className="text-roots-sand" />
+        </Link>
+        <Link href="/notificaciones" className="glass-card p-4 flex items-center justify-between hover:bg-roots-cream/50 transition-colors">
+          <div className="flex items-center gap-3 text-roots-charcoal font-medium">
+            <Bell size={18} className="text-roots-red" />
+            Preferencias de Notificación
+          </div>
+          <ChevronRight size={18} className="text-roots-sand" />
+        </Link>
+      </motion.div>
+
+      {/* Dev / Logout Button */}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-4">
+        <button 
+          onClick={() => switchRole('usuario')}
+          className="w-full bg-white border-2 border-roots-sand text-roots-charcoal font-bold py-3 rounded-xl flex items-center justify-center gap-2 hover:bg-roots-cream transition-colors"
+        >
+          <LogOut size={18} />
+          Cerrar Sesión (Dev Reset)
+        </button>
+      </motion.div>
     </div>
   );
 }

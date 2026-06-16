@@ -165,6 +165,7 @@ export const mockCommunities: Community[] = [
 export const mockUser: UserProfile = {
   id: "user-1",
   name: "Álex",
+  role: "usuario",
   avatar: "/images/avatars/alex.jpg",
   bio: "Amante de la naturaleza y la buena comida. Siempre buscando nuevas experiencias en Valencia.",
   city: "Valencia",

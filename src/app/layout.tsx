@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import { BottomNav } from "@/components/BottomNav";
+import { ClientProviders } from "./client-providers";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -46,8 +46,9 @@ export default function RootLayout({
       className={`${outfit.variable} ${playfair.variable} h-full`}
     >
       <body className="min-h-full flex flex-col font-sans">
-        <main className="flex-1 page-content">{children}</main>
-        <BottomNav />
+        <ClientProviders>
+          <main className="flex-1 page-content">{children}</main>
+        </ClientProviders>
       </body>
     </html>
   );

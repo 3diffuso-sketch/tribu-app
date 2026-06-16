@@ -2,6 +2,11 @@
    Types for TribU (Roots) application
    ============================================================ */
 
+// ── User Roles ──
+export type UserRole = 'admin' | 'sponsor' | 'guia' | 'crew' | 'usuario';
+
+// ── Existing types (preserved) ──
+
 export interface Event {
   id: string;
   title: string;
@@ -21,6 +26,9 @@ export interface Event {
     avatar: string;
   };
   city: string;
+  communityId?: string;
+  status?: 'active' | 'cancelled' | 'completed';
+  crewAssigned?: string[];
 }
 
 export interface Community {
@@ -33,6 +41,9 @@ export interface Community {
   tags: string[];
   isLocked: boolean;
   requiredStars: number;
+  guiaId?: string;
+  guiaName?: string;
+  crewIds?: string[];
 }
 
 export interface UserProfile {
@@ -46,6 +57,9 @@ export interface UserProfile {
   interests: string[];
   eventsAttended: number;
   joinedDate: string;
+  role: UserRole;
+  email?: string;
+  active?: boolean;
 }
 
 export interface Connection {
@@ -86,3 +100,126 @@ export const INTEREST_TAGS = [
   "Emprendimiento",
   "Mascotas",
 ] as const;
+
+// ── New types for role-based system ──
+
+export interface SponsorProfile {
+  userId: string;
+  businessName: string;
+  description: string;
+  logo: string;
+  address: string;
+  phone: string;
+  email: string;
+  website: string;
+  socialLinks: { platform: string; url: string }[];
+  category: string;
+  maxCapacity: number;
+  amenities: string[];
+  photos: string[];
+  openTime: string;
+  closeTime: string;
+  availableDays: string[];
+}
+
+export interface DisponibilidadSlot {
+  id: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  available: boolean;
+  reservedBy?: string;
+  eventName?: string;
+}
+
+export interface Mensaje {
+  id: string;
+  senderId: string;
+  senderName: string;
+  senderAvatar: string;
+  receiverId: string;
+  content: string;
+  timestamp: string;
+  read: boolean;
+}
+
+export interface Conversacion {
+  id: string;
+  participantId: string;
+  participantName: string;
+  participantAvatar: string;
+  participantRole: UserRole;
+  lastMessage: string;
+  lastMessageTime: string;
+  unreadCount: number;
+}
+
+export interface CommunityStats {
+  communityId: string;
+  totalMembers: number;
+  newMembersMonth: number;
+  totalEvents: number;
+  eventsMonth: number;
+  avgAttendance: number;
+  retentionRate: number;
+  monthlyGrowth: number[];
+  topEvents: { name: string; attendees: number }[];
+  categoryDistribution: { category: string; count: number }[];
+}
+
+export interface RolePermissions {
+  canCreateCommunity: boolean;
+  canEditCommunity: boolean;
+  canDeleteCommunity: boolean;
+  canCreateEvent: boolean;
+  canEditEvent: boolean;
+  canDeleteEvent: boolean;
+  canManageMembers: boolean;
+  canBanMembers: boolean;
+  canMuteMembers: boolean;
+  canViewStats: boolean;
+  canViewFullStats: boolean;
+  canContactSponsors: boolean;
+  canManageSponsors: boolean;
+  canAccessAdmin: boolean;
+  canModerateEvents: boolean;
+  canCheckInAttendees: boolean;
+  canAssignCrew: boolean;
+  canManageBusinessProfile: boolean;
+  canManageCalendar: boolean;
+  canChatWithGuias: boolean;
+}
+
+// ── Role metadata for UI ──
+export const ROLE_META: Record<UserRole, { label: string; icon: string; color: string; description: string }> = {
+  admin: {
+    label: 'Administrador',
+    icon: '🛡️',
+    color: 'var(--roots-red)',
+    description: 'Acceso total a la plataforma. Gestión de usuarios, comunidades y moderación.',
+  },
+  sponsor: {
+    label: 'Sponsor',
+    icon: '🏢',
+    color: 'var(--roots-orange)',
+    description: 'Negocios locales que ofrecen espacios y patrocinan eventos.',
+  },
+  guia: {
+    label: 'Guía',
+    icon: '🧭',
+    color: 'var(--roots-green)',
+    description: 'Gestiona comunidades, crea eventos y lidera experiencias.',
+  },
+  crew: {
+    label: 'Crew',
+    icon: '🤝',
+    color: 'var(--roots-brown)',
+    description: 'Ayuda a moderar y gestionar eventos asignados por el Guía.',
+  },
+  usuario: {
+    label: 'Usuario',
+    icon: '⭐',
+    color: 'var(--roots-red-light)',
+    description: 'Descubre eventos, únete a comunidades y conecta con personas.',
+  },
+};

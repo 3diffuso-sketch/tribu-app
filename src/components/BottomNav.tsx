@@ -1,37 +1,30 @@
 "use client";
 
+/* ============================================================
+   BottomNav — Dynamic navigation based on user role
+   ============================================================ */
+
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  Compass,
-  Users,
-  Heart,
-  User,
-  type LucideIcon,
-} from "lucide-react";
-
-interface NavItem {
-  href: string;
-  label: string;
-  icon: LucideIcon;
-  requiresLevel?: number;
-}
-
-const navItems: NavItem[] = [
-  { href: "/", label: "Explorar", icon: Compass },
-  { href: "/comunidades", label: "Comunidades", icon: Users, requiresLevel: 2 },
-  { href: "/conexiones", label: "Conexiones", icon: Heart, requiresLevel: 3 },
-  { href: "/perfil", label: "Perfil", icon: User },
-];
+import { type LucideIcon } from "lucide-react";
+import { useAuth } from "@/lib/auth-context";
+import { getNavItemsForRole, type NavItem } from "@/lib/permissions";
 
 export function BottomNav() {
   const pathname = usePathname();
+  const { role } = useAuth();
 
-  // Hide nav on onboarding/auth pages
-  if (pathname?.startsWith("/auth") || pathname?.startsWith("/onboarding")) {
+  // Hide nav on onboarding/auth/login pages
+  if (
+    pathname?.startsWith("/auth") ||
+    pathname?.startsWith("/onboarding") ||
+    pathname?.startsWith("/login")
+  ) {
     return null;
   }
+
+  const navItems = getNavItemsForRole(role);
 
   return (
     <nav className="bottom-nav" aria-label="Navegación principal">
