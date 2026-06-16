@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Plus, Save, MoreVertical } from "lucide-react";
+import { Calendar, Plus, Save, MoreVertical, MapPin, Clock } from "lucide-react";
 import { FormField } from "@/components/FormField";
 import { DataTable } from "@/components/DataTable";
-import { mockEvents } from "@/lib/mock-data";
+import { mockEvents, mockCommunities } from "@/lib/mock-data";
 
 export default function GuiaEventosPage() {
+  const guideCommunities = mockCommunities.slice(0, 3);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
@@ -19,18 +20,27 @@ export default function GuiaEventosPage() {
     category: "",
     maxAttendees: 20,
     starsReward: 5,
+    communityId: guideCommunities[0]?.id || "",
+    subgroupId: "",
   });
+
+  const selectedCommunity = guideCommunities.find(c => c.id === formData.communityId);
+  const subgroupsOptions = selectedCommunity?.subgroups?.map(s => ({ value: s.id, label: s.name })) || [];
 
   const columns = [
     {
       key: "title",
       label: "Evento",
-      render: (val: string, row: any) => (
-        <div className="flex flex-col">
-          <span className="font-medium text-roots-charcoal">{val}</span>
-          <span className="text-[10px] text-foreground-muted">{row.date} • {row.time}</span>
-        </div>
-      )
+      render: (val: string, row: any) => {
+        const d = new Date(row.date);
+        const formattedDate = isNaN(d.getTime()) ? row.date : d.toLocaleDateString("es-ES", { day: 'numeric', month: 'short' });
+        return (
+          <div className="flex flex-col">
+            <span className="font-medium text-roots-charcoal">{val}</span>
+            <span className="text-[10px] text-foreground-muted">{formattedDate} • {row.time}</span>
+          </div>
+        );
+      }
     },
     {
       key: "attendees",
@@ -46,14 +56,14 @@ export default function GuiaEventosPage() {
         <span className={`px-2 py-1 rounded-md text-[10px] font-semibold ${
           (!val || val === 'active') ? 'bg-roots-green/10 text-roots-green' : 'bg-gray-100 text-gray-600'
         }`}>
-          {val || 'Activo'}
+          {val === 'active' ? 'Activo' : val || 'Activo'}
         </span>
       )
     }
   ];
 
   return (
-    <div className="flex flex-col gap-6 px-5">
+    <div className="flex flex-col gap-6 px-5 pb-10">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-between items-start">
         <div>
           <h1 className="text-2xl font-display font-bold text-roots-charcoal flex items-center gap-2 mb-2">
@@ -83,6 +93,27 @@ export default function GuiaEventosPage() {
           className="glass-card p-5"
         >
           <form className="flex flex-col gap-4">
+            {/* Comunidad y Subgrupo */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-roots-sand/10 p-4 rounded-xl border border-roots-sand/40">
+              <FormField 
+                label="Comunidad a la que pertenece" 
+                type="select"
+                options={guideCommunities.map(c => ({ value: c.id, label: c.name }))}
+                value={formData.communityId} 
+                onChange={v => {
+                  setFormData({...formData, communityId: v, subgroupId: ""});
+                }} 
+                required 
+              />
+              <FormField 
+                label="Subgrupo" 
+                type="select"
+                options={[{value: "", label: "General (Toda la comunidad)"}, ...subgroupsOptions]}
+                value={formData.subgroupId} 
+                onChange={v => setFormData({...formData, subgroupId: v})} 
+              />
+            </div>
+
             <FormField label="Título del Evento" value={formData.title} onChange={v => setFormData({...formData, title: v})} required />
             <FormField label="Descripción" type="textarea" value={formData.description} onChange={v => setFormData({...formData, description: v})} required />
             
@@ -91,7 +122,7 @@ export default function GuiaEventosPage() {
               <FormField label="Hora" type="text" placeholder="ej. 18:00" value={formData.time} onChange={v => setFormData({...formData, time: v})} required />
             </div>
             
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField label="Ubicación (Nombre)" value={formData.location} onChange={v => setFormData({...formData, location: v})} required />
               <FormField label="Dirección Completa" value={formData.address} onChange={v => setFormData({...formData, address: v})} required />
             </div>
@@ -107,7 +138,13 @@ export default function GuiaEventosPage() {
                 <FormField 
                   label="Categoría" 
                   type="select" 
-                  options={[{value:"deporte", label:"Deporte"}, {value:"social", label:"Social"}]} 
+                  options={[
+                    {value:"Senderismo", label:"Senderismo"}, 
+                    {value:"Arte & Cultura", label:"Arte & Cultura"},
+                    {value:"Yoga & Bienestar", label:"Yoga & Bienestar"},
+                    {value:"Gastronomía", label:"Gastronomía"},
+                    {value:"Música", label:"Música"}
+                  ]} 
                   value={formData.category} 
                   onChange={v => setFormData({...formData, category: v})} 
                   required 

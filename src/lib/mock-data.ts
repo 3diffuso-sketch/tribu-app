@@ -4,13 +4,19 @@
 
 import type { Event, Community, UserProfile, Connection } from "./types";
 
+const today = new Date();
+const addDays = (d: Date, days: number) => {
+  const newDate = new Date(d);
+  newDate.setDate(newDate.getDate() + days);
+  return newDate.toISOString();
+};
+
 export const mockEvents: Event[] = [
   {
     id: "ev-1",
     title: "Paseo nocturno por el Turia con tapas",
-    description:
-      "Una ruta guiada por los Jardines del Turia al atardecer, seguida de una parada en un bar de tapas local. Ideal para conocer gente nueva en un ambiente relajado.",
-    date: "24 Mayo",
+    description: "Una ruta guiada por los Jardines del Turia al atardecer, seguida de una parada en un bar de tapas local. Ideal para conocer gente nueva en un ambiente relajado.",
+    date: addDays(today, 1),
     time: "19:30",
     location: "Jardines del Turia",
     address: "Pont de Fusta, Valencia",
@@ -22,13 +28,15 @@ export const mockEvents: Event[] = [
     starsReward: 2,
     organizer: { name: "Marina R.", avatar: "/images/avatars/marina.jpg" },
     city: "Valencia",
+    communityId: "com-1",
+    subgroupId: "sub-1",
+    status: "active"
   },
   {
     id: "ev-2",
     title: "Taller de cerámica artesanal",
-    description:
-      "Aprende técnicas básicas de modelado y esmaltado. Cada participante se lleva su pieza a casa. Incluye materiales y bebida de bienvenida.",
-    date: "26 Mayo",
+    description: "Aprende técnicas básicas de modelado y esmaltado. Cada participante se lleva su pieza a casa. Incluye materiales y bebida de bienvenida.",
+    date: addDays(today, 4),
     time: "11:00",
     location: "Barrio del Carmen",
     address: "C/ Caballeros 38, Valencia",
@@ -40,13 +48,15 @@ export const mockEvents: Event[] = [
     starsReward: 3,
     organizer: { name: "Pablo G.", avatar: "/images/avatars/pablo.jpg" },
     city: "Valencia",
+    communityId: "com-3",
+    subgroupId: "sub-3",
+    status: "active"
   },
   {
     id: "ev-3",
     title: "Sesión de yoga al amanecer en la Malvarrosa",
-    description:
-      "Saluda al sol con una clase de Vinyasa Flow frente al mar. Trae tu esterilla. Todos los niveles bienvenidos.",
-    date: "28 Mayo",
+    description: "Saluda al sol con una clase de Vinyasa Flow frente al mar. Trae tu esterilla. Todos los niveles bienvenidos.",
+    date: addDays(today, 2),
     time: "07:00",
     location: "Playa de la Malvarrosa",
     address: "Paseo Marítimo, Valencia",
@@ -58,13 +68,15 @@ export const mockEvents: Event[] = [
     starsReward: 2,
     organizer: { name: "Lucía S.", avatar: "/images/avatars/lucia.jpg" },
     city: "Valencia",
+    communityId: "com-1",
+    subgroupId: "sub-2",
+    status: "active"
   },
   {
     id: "ev-4",
     title: "Club de lectura: ficción latinoamericana",
-    description:
-      "Comentamos 'La casa de los espíritus' de Isabel Allende. Café y pastas incluidos. Espacio íntimo para compartir ideas.",
-    date: "30 Mayo",
+    description: "Comentamos 'La casa de los espíritus' de Isabel Allende. Café y pastas incluidos. Espacio íntimo para compartir ideas.",
+    date: addDays(today, 8),
     time: "18:00",
     location: "Librería Bartleby",
     address: "C/ Cervantes 18, Valencia",
@@ -76,13 +88,15 @@ export const mockEvents: Event[] = [
     starsReward: 2,
     organizer: { name: "Andrea M.", avatar: "/images/avatars/andrea.jpg" },
     city: "Valencia",
+    communityId: "com-4",
+    subgroupId: "sub-5",
+    status: "active"
   },
   {
     id: "ev-5",
     title: "Ruta gastronómica por Ruzafa",
-    description:
-      "Descubre los mejores rincones culinarios del barrio más vibrante de Valencia. 5 paradas, 5 sabores diferentes.",
-    date: "1 Junio",
+    description: "Descubre los mejores rincones culinarios del barrio más vibrante de Valencia. 5 paradas, 5 sabores diferentes.",
+    date: addDays(today, 12), // Más de 10 días, no debería aparecer en próximos 10 días
     time: "13:00",
     location: "Ruzafa",
     address: "Plaza del Barón de Cortés, Valencia",
@@ -94,13 +108,15 @@ export const mockEvents: Event[] = [
     starsReward: 3,
     organizer: { name: "Carlos D.", avatar: "/images/avatars/carlos.jpg" },
     city: "Valencia",
+    communityId: "com-2",
+    subgroupId: "sub-4",
+    status: "active"
   },
   {
     id: "ev-6",
     title: "Jam session acústica en La Nau",
-    description:
-      "Trae tu instrumento o simplemente ven a escuchar. Ambiente libre, cerveza artesanal y buena compañía.",
-    date: "2 Junio",
+    description: "Trae tu instrumento o simplemente ven a escuchar. Ambiente libre, cerveza artesanal y buena compañía.",
+    date: addDays(today, 0), // Hoy
     time: "20:00",
     location: "Centre Cultural La Nau",
     address: "C/ de la Universitat 2, Valencia",
@@ -112,6 +128,9 @@ export const mockEvents: Event[] = [
     starsReward: 2,
     organizer: { name: "David L.", avatar: "/images/avatars/david.jpg" },
     city: "Valencia",
+    communityId: "com-3",
+    subgroupId: "sub-3",
+    status: "active"
   },
 ];
 
@@ -126,6 +145,10 @@ export const mockCommunities: Community[] = [
     tags: ["Deportes", "Naturaleza", "Yoga & Bienestar"],
     isLocked: false,
     requiredStars: 5,
+    subgroups: [
+      { id: "sub-1", name: "Principiantes", description: "Ritmo suave, ideal para empezar." },
+      { id: "sub-2", name: "Maratón", description: "Entrenamiento para fondo y medias maratones." }
+    ]
   },
   {
     id: "com-2",
@@ -137,6 +160,9 @@ export const mockCommunities: Community[] = [
     tags: ["Gastronomía", "Cocina", "Viajes"],
     isLocked: false,
     requiredStars: 5,
+    subgroups: [
+      { id: "sub-4", name: "Rutas de Tapas", description: "Exploración de bares y tapas los fines de semana." }
+    ]
   },
   {
     id: "com-3",
@@ -148,6 +174,9 @@ export const mockCommunities: Community[] = [
     tags: ["Arte & Cultura", "Fotografía", "Naturaleza"],
     isLocked: true,
     requiredStars: 5,
+    subgroups: [
+      { id: "sub-3", name: "Fotografía Urbana", description: "Salidas fotográficas por el centro de la ciudad." }
+    ]
   },
   {
     id: "com-4",
@@ -159,6 +188,9 @@ export const mockCommunities: Community[] = [
     tags: ["Tecnología", "Emprendimiento", "Idiomas"],
     isLocked: true,
     requiredStars: 5,
+    subgroups: [
+      { id: "sub-5", name: "Desarrollo Web", description: "Grupo sobre React, Next.js y ecosistema web." }
+    ]
   },
 ];
 

@@ -55,7 +55,7 @@ export function EventCard({ event, index = 0 }: EventCardProps) {
         <div className="flex items-center gap-4 text-sm text-foreground-muted">
           <span className="flex items-center gap-1.5">
             <Calendar size={14} />
-            {event.date}
+            {new Date(event.date).toLocaleDateString("es-ES", { day: "numeric", month: "short" })}
           </span>
           <span className="flex items-center gap-1.5">
             <MapPin size={14} />

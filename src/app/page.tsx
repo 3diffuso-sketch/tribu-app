@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, MapPin, SlidersHorizontal, Star, Sparkles } from "lucide-react";
+import { Search, MapPin, SlidersHorizontal, Star, Sparkles, Users } from "lucide-react";
 import { EventCard } from "@/components/EventCard";
-import { mockEvents } from "@/lib/mock-data";
+import { CommunityCard } from "@/components/CommunityCard";
+import { mockEvents, mockCommunities } from "@/lib/mock-data";
 import { INTEREST_TAGS } from "@/lib/types";
 
 const categories = ["Todos", "Senderismo", "Arte & Cultura", "Yoga & Bienestar", "Gastronomía", "Música", "Lectura"];
@@ -13,14 +14,29 @@ export default function ExplorePage() {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const today = new Date();
+  const tenDaysFromNow = new Date(today);
+  tenDaysFromNow.setDate(today.getDate() + 10);
+
+  const filteredCommunities = mockCommunities.filter((community) => {
+    const matchesCategory = selectedCategory === "Todos" || community.category === selectedCategory;
+    const matchesSearch = searchQuery === "" || 
+      community.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      community.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
+
   const filteredEvents = mockEvents.filter((event) => {
-    const matchesCategory =
-      selectedCategory === "Todos" || event.category === selectedCategory;
-    const matchesSearch =
-      searchQuery === "" ||
+    const matchesCategory = selectedCategory === "Todos" || event.category === selectedCategory;
+    const matchesSearch = searchQuery === "" ||
       event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCategory && matchesSearch;
+    
+    // Filter events happening today or in the next 10 days
+    const eventDate = new Date(event.date);
+    const inNext10Days = eventDate >= new Date(today.setHours(0,0,0,0)) && eventDate <= tenDaysFromNow;
+    
+    return matchesCategory && matchesSearch && inNext10Days;
   });
 
   return (
@@ -54,7 +70,7 @@ export default function ExplorePage() {
             <span className="gradient-text">experiencia</span>
           </h1>
           <p className="mt-2 text-sm text-foreground-muted max-w-xs">
-            La intimidad empieza en comunidad. Encuentra eventos que conecten con tus intereses.
+            La intimidad empieza en comunidad. Encuentra eventos y grupos que conecten con tus intereses.
           </p>
         </motion.div>
 
@@ -72,7 +88,7 @@ export default function ExplorePage() {
             />
             <input
               type="text"
-              placeholder="Buscar eventos, intereses..."
+              placeholder="Buscar eventos, comunidades, intereses..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-3 rounded-full bg-white border border-roots-sand/40 
@@ -121,7 +137,7 @@ export default function ExplorePage() {
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.35 }}
-        className="mx-5 mb-5 p-4 rounded-2xl flex items-center gap-3"
+        className="mx-5 mb-8 p-4 rounded-2xl flex items-center gap-3"
         style={{
           background:
             "linear-gradient(135deg, rgba(232,145,90,0.12) 0%, rgba(196,68,42,0.08) 100%)",
@@ -140,25 +156,62 @@ export default function ExplorePage() {
         </div>
       </motion.div>
 
+      {/* ── Communities grid ── */}
+      <section className="px-5 pb-10" aria-label="Comunidades en la zona">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-display text-xl font-semibold text-roots-charcoal flex items-center gap-2">
+            <Users size={20} className="text-roots-green" />
+            Comunidades en tu zona
+          </h2>
+        </div>
+
+        <AnimatePresence mode="wait">
+          {filteredCommunities.length > 0 ? (
+            <motion.div
+              key={`com-${selectedCategory}-${searchQuery}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
+            >
+              {filteredCommunities.map((community, i) => (
+                <CommunityCard key={community.id} community={community} index={i} />
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="text-center py-8"
+            >
+              <p className="text-foreground-muted font-medium">
+                No hay comunidades para esta búsqueda
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </section>
+
       {/* ── Event grid ── */}
-      <section className="px-5 pb-8" aria-label="Eventos disponibles">
+      <section className="px-5 pb-20" aria-label="Eventos próximos 10 días">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-display text-xl font-semibold text-roots-charcoal">
-            Próximos eventos
+            Próximos 10 días
           </h2>
-          <span className="text-sm text-foreground-muted">
-            {filteredEvents.length} disponibles
+          <span className="text-sm text-foreground-muted bg-roots-sand/30 px-2 py-0.5 rounded-full">
+            {filteredEvents.length} eventos
           </span>
         </div>
 
         <AnimatePresence mode="wait">
           {filteredEvents.length > 0 ? (
             <motion.div
-              key={selectedCategory + searchQuery}
+              key={`ev-${selectedCategory}-${searchQuery}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
             >
               {filteredEvents.map((event, i) => (
                 <EventCard key={event.id} event={event} index={i} />
@@ -166,20 +219,14 @@ export default function ExplorePage() {
             </motion.div>
           ) : (
             <motion.div
-              key="empty"
+              key="empty-ev"
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="text-center py-16"
+              className="text-center py-8"
             >
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-roots-cream-dark flex items-center justify-center">
-                <Search size={24} className="text-foreground-muted" />
-              </div>
               <p className="text-foreground-muted font-medium">
-                No hay eventos para esta búsqueda
-              </p>
-              <p className="text-sm text-foreground-muted/70 mt-1">
-                Prueba con otra categoría o término
+                No hay eventos próximos para esta búsqueda
               </p>
             </motion.div>
           )}

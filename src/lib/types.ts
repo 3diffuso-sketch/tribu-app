@@ -27,6 +27,7 @@ export interface Event {
   };
   city: string;
   communityId?: string;
+  subgroupId?: string;
   status?: 'active' | 'cancelled' | 'completed';
   crewAssigned?: string[];
 }
@@ -44,6 +45,7 @@ export interface Community {
   guiaId?: string;
   guiaName?: string;
   crewIds?: string[];
+  subgroups?: { id: string; name: string; description: string }[];
 }
 
 export interface UserProfile {
@@ -116,7 +118,7 @@ export interface SponsorProfile {
   category: string;
   maxCapacity: number;
   amenities: string[];
-  photos: string[];
+  photos: string[]; // up to 5 photos
   openTime: string;
   closeTime: string;
   availableDays: string[];
