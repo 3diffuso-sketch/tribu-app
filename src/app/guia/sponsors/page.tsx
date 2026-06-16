@@ -62,18 +62,18 @@ export default function GuiaSponsorsPage() {
             </div>
 
             <div className="flex items-center gap-2 mt-auto">
+              <Link 
+                href={`/negocio/${sponsor.id}`}
+                className="flex-1 bg-roots-sand/20 text-roots-charcoal text-xs font-semibold py-2 rounded-lg flex items-center justify-center gap-1 hover:bg-roots-sand/40 transition-colors"
+              >
+                <Store size={14} /> Ver Perfil
+              </Link>
               <button 
                 onClick={() => setSelectedSponsor(sponsor.id)}
                 className="flex-1 bg-roots-charcoal text-white text-xs font-semibold py-2 rounded-lg flex items-center justify-center gap-1 hover:bg-roots-charcoal/90 transition-colors"
               >
-                <CalendarIcon size={14} /> Disponibilidad
+                <CalendarIcon size={14} /> Fechas
               </button>
-              <Link 
-                href={`/guia/chat?id=${sponsor.id}`}
-                className="flex-1 bg-white border border-roots-sand/60 text-roots-charcoal text-xs font-semibold py-2 rounded-lg flex items-center justify-center gap-1 hover:bg-roots-cream transition-colors"
-              >
-                <MessageCircle size={14} className="text-roots-orange" /> Contactar
-              </Link>
             </div>
           </motion.div>
         ))}
