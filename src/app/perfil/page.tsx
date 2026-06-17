@@ -1,12 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { User, Settings, Award, Calendar, Bell, ChevronRight, LogOut, HelpCircle } from "lucide-react";
+import { User, Settings, Award, Calendar, Bell, ChevronRight, LogOut, HelpCircle, CreditCard } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import Link from "next/link";
+import { useState } from "react";
+import { PricingModal } from "@/components/PricingModal";
 
 export default function PerfilPage() {
   const { user, switchRole } = useAuth();
+  const [isPricingModalOpen, setIsPricingModalOpen] = useState(false);
 
   const insignias = [
     { id: 1, name: "Fundador", icon: "👑", color: "bg-yellow-100 text-yellow-700" },
@@ -23,7 +26,7 @@ export default function PerfilPage() {
   const intereses = ["Running", "Yoga", "Networking", "Tecnología", "Fotografía"];
 
   return (
-    <div className="flex flex-col gap-6 px-5 pb-24 pt-6 max-w-lg mx-auto min-h-screen">
+    <div className="flex flex-col gap-6 px-4 md:px-8 pb-24 pt-6 max-w-7xl mx-auto min-h-screen">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-between items-center">
         <h1 className="text-2xl font-display font-bold text-roots-charcoal">Mi Perfil</h1>
         <button className="p-2 bg-roots-cream rounded-full text-roots-charcoal hover:bg-roots-sand/50 transition-colors">
@@ -51,6 +54,30 @@ export default function PerfilPage() {
           </div>
         ))}
       </motion.div>
+
+      {/* Mi Suscripción (Solo para Guía y Sponsor) */}
+      {(user.role === "guia" || user.role === "sponsor") && (
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="glass-card p-5">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold text-roots-charcoal flex items-center gap-2">
+              <CreditCard size={18} className="text-roots-green" />
+              Mi Suscripción
+            </h3>
+          </div>
+          <div className="flex items-center justify-between bg-roots-cream p-4 rounded-xl border border-roots-sand/50">
+            <div>
+              <p className="text-xs text-foreground-muted mb-1">Plan Actual</p>
+              <p className="font-bold text-roots-charcoal">Básico</p>
+            </div>
+            <button 
+              onClick={() => setIsPricingModalOpen(true)}
+              className="bg-roots-green text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-roots-green/90 transition-colors shadow-sm"
+            >
+              Mejorar Plan
+            </button>
+          </div>
+        </motion.div>
+      )}
 
       {/* Insignias */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="glass-card p-5">
@@ -121,6 +148,12 @@ export default function PerfilPage() {
           Cerrar Sesión (Dev Reset)
         </button>
       </motion.div>
+
+      <PricingModal 
+        isOpen={isPricingModalOpen} 
+        onClose={() => setIsPricingModalOpen(false)} 
+        currentPlan="basico" 
+      />
     </div>
   );
 }

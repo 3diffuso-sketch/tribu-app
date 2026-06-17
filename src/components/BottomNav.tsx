@@ -28,7 +28,7 @@ export function BottomNav() {
 
   return (
     <nav className="bottom-nav" aria-label="Navegación principal">
-      <div className="flex items-center justify-around max-w-lg mx-auto">
+      <div className="flex items-center justify-around max-w-7xl mx-auto px-4">
         {navItems.map((item) => {
           const isActive =
             item.href === "/"

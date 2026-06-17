@@ -21,11 +21,11 @@ export default function SponsorDashboard() {
 
   return (
     <div className="flex flex-col gap-6 px-5">
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-center">
         <h1 className="text-3xl font-display font-bold text-roots-charcoal mb-1">
           Hola, <span className="text-roots-orange">{user.name.split(' ')[0]}</span>
         </h1>
-        <p className="text-sm font-medium text-roots-charcoal flex items-center gap-1.5">
+        <p className="text-sm font-medium text-roots-charcoal flex justify-center items-center gap-1.5">
           <Store size={16} className="text-roots-orange" /> La Terraza Valencia
         </p>
       </motion.div>

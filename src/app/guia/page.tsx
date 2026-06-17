@@ -39,11 +39,11 @@ export default function GuiaDashboard() {
 
   return (
     <div className="flex flex-col gap-6 px-5 pb-10">
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-2">
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-2 text-center">
         <h1 className="text-3xl font-display font-bold text-roots-charcoal mb-1">
           Panel de <span className="text-roots-green">Guía</span>
         </h1>
-        <p className="text-sm font-medium text-foreground-muted flex items-center gap-1.5">
+        <p className="text-sm font-medium text-foreground-muted flex justify-center items-center gap-1.5">
           Hola, {user.name}
         </p>
 

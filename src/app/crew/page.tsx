@@ -26,11 +26,11 @@ export default function CrewDashboard() {
 
   return (
     <div className="flex flex-col gap-6 px-5">
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-center">
         <h1 className="text-3xl font-display font-bold text-roots-charcoal mb-1">
           Panel de <span className="text-roots-brown">Crew</span>
         </h1>
-        <p className="text-sm font-medium text-foreground-muted flex items-center gap-1.5">
+        <p className="text-sm font-medium text-foreground-muted flex justify-center items-center gap-1.5">
           <Shield size={16} className="text-roots-brown" /> Hola, {user.name}
         </p>
       </motion.div>

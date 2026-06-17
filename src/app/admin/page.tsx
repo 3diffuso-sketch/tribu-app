@@ -201,7 +201,7 @@ export default function AdminDashboard() {
 
   /* ── Donut chart segments (SVG) ── */
   const donutSegments = [
-    { label: "Sponsors Plans", percent: dataset.sponsorsPercent, color: "var(--roots-green)" },
+    { label: "Planes de Sponsors", percent: dataset.sponsorsPercent, color: "var(--roots-green)" },
     { label: "Membresías", percent: dataset.membresiasPercent, color: "var(--roots-orange)" },
     { label: "Merchandising", percent: dataset.merchPercent, color: "var(--roots-brown)" },
   ];
@@ -230,7 +230,7 @@ export default function AdminDashboard() {
   return (
     <div className="flex flex-col gap-6 px-5 pb-10">
       {/* ── Header ── */}
-      <motion.div initial="hidden" animate="visible" variants={containerVariants}>
+      <motion.div initial="hidden" animate="visible" variants={containerVariants} className="text-center">
         <motion.h1 variants={itemVariants} className="text-3xl font-display font-bold mb-1">
           <span className="gradient-text bg-gradient-to-r from-roots-red to-roots-orange">
             Panel de Administración
@@ -276,15 +276,15 @@ export default function AdminDashboard() {
         className="grid grid-cols-2 md:grid-cols-4 gap-3"
       >
         {/* Total Revenue */}
-        <div className="glass-card p-4 col-span-2 md:col-span-1">
-          <div className="flex items-center gap-2 mb-1">
+        <div className="glass-card p-4 col-span-2 md:col-span-1 text-center md:text-left">
+          <div className="flex items-center justify-center md:justify-start gap-2 mb-1">
             <div className="w-8 h-8 rounded-lg bg-roots-green/10 flex items-center justify-center">
               <DollarSign size={18} className="text-roots-green" />
             </div>
-            <span className="text-xs text-foreground-muted font-medium">Total Revenue</span>
+            <span className="text-xs text-foreground-muted font-medium">Ingresos Totales</span>
           </div>
           <p className="text-3xl font-display font-bold text-roots-charcoal">{dataset.totalRevenue}</p>
-          <div className="flex items-center gap-1 mt-1">
+          <div className="flex items-center justify-center md:justify-start gap-1 mt-1">
             <ArrowUpRight size={14} className="text-roots-green" />
             <span className="text-xs text-roots-green font-semibold">+18%</span>
             <span className="text-[10px] text-foreground-muted">vs anterior</span>
@@ -292,30 +292,30 @@ export default function AdminDashboard() {
         </div>
 
         {/* MRR */}
-        <div className="glass-card p-4">
-          <p className="text-[10px] uppercase tracking-wider text-foreground-muted font-semibold mb-1">MRR</p>
+        <div className="glass-card p-4 text-center md:text-left">
+          <p className="text-[10px] uppercase tracking-wider text-foreground-muted font-semibold mb-1">Ingresos Rec. (MRR)</p>
           <p className="text-xl font-bold text-roots-charcoal">{dataset.mrr}</p>
-          <div className="flex items-center gap-1 mt-1">
+          <div className="flex items-center justify-center md:justify-start gap-1 mt-1">
             <ArrowUpRight size={12} className="text-roots-green" />
             <span className="text-[10px] text-roots-green font-medium">+8%</span>
           </div>
         </div>
 
         {/* ARR */}
-        <div className="glass-card p-4">
-          <p className="text-[10px] uppercase tracking-wider text-foreground-muted font-semibold mb-1">ARR Estimado</p>
+        <div className="glass-card p-4 text-center md:text-left">
+          <p className="text-[10px] uppercase tracking-wider text-foreground-muted font-semibold mb-1">Ingresos Anuales (ARR)</p>
           <p className="text-xl font-bold text-roots-charcoal">{dataset.arr}</p>
-          <div className="flex items-center gap-1 mt-1">
+          <div className="flex items-center justify-center md:justify-start gap-1 mt-1">
             <ArrowUpRight size={12} className="text-roots-green" />
             <span className="text-[10px] text-roots-green font-medium">+12%</span>
           </div>
         </div>
 
         {/* Churn */}
-        <div className="glass-card p-4">
-          <p className="text-[10px] uppercase tracking-wider text-foreground-muted font-semibold mb-1">Churn Rate</p>
+        <div className="glass-card p-4 text-center md:text-left">
+          <p className="text-[10px] uppercase tracking-wider text-foreground-muted font-semibold mb-1">Tasa de Abandono</p>
           <p className="text-xl font-bold text-roots-charcoal">{dataset.churn}</p>
-          <div className="flex items-center gap-1 mt-1">
+          <div className="flex items-center justify-center md:justify-start gap-1 mt-1">
             <ArrowDownRight size={12} className="text-roots-red" />
             <span className="text-[10px] text-roots-red font-medium">+0.3%</span>
           </div>
@@ -331,11 +331,11 @@ export default function AdminDashboard() {
           transition={{ delay: 0.15 }}
           className="glass-card p-5"
         >
-          <h3 className="font-semibold text-roots-charcoal mb-4 flex items-center gap-2">
+          <h3 className="font-semibold text-roots-charcoal mb-4 flex items-center justify-center md:justify-start gap-2">
             <PieChart size={18} className="text-roots-orange" />
-            Revenue por Fuente
+            Ingresos por Fuente
           </h3>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center justify-center md:justify-start gap-6">
             {/* SVG Donut */}
             <svg width={100} height={100} viewBox="0 0 36 36" className="transform -rotate-90 flex-shrink-0">
               {(() => {
@@ -386,9 +386,9 @@ export default function AdminDashboard() {
           transition={{ delay: 0.2 }}
           className="glass-card p-5"
         >
-          <h3 className="font-semibold text-roots-charcoal mb-4 flex items-center gap-2">
+          <h3 className="font-semibold text-roots-charcoal mb-4 flex items-center justify-center md:justify-start gap-2">
             <BarChart3 size={18} className="text-roots-green" />
-            Tendencia de Revenue
+            Tendencia de Ingresos
           </h3>
           <svg
             width="100%"
