@@ -141,6 +141,8 @@ export default function AdminDashboard() {
               <button className="mt-2 text-xs font-semibold text-roots-green hover:underline">Aprobar</button>
             </div>
           </div>
+        </motion.div>
+
         {/* Peticiones de Creación */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
