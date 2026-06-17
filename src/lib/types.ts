@@ -46,6 +46,15 @@ export interface Community {
   guiaName?: string;
   crewIds?: string[];
   subgroups?: { id: string; name: string; description: string }[];
+  merch?: MerchItem[];
+  status?: 'pending' | 'active' | 'suspended';
+}
+
+export interface MerchItem {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
 }
 
 export interface UserProfile {
@@ -62,6 +71,11 @@ export interface UserProfile {
   role: UserRole;
   email?: string;
   active?: boolean;
+  joinedCommunities?: string[];
+  joinedSubgroups?: string[];
+  lastLeftCommunityDate?: string;
+  notificationSettings?: 'all' | 'users_only' | 'none';
+  isCrewRequestPending?: boolean;
 }
 
 export interface Connection {
@@ -154,6 +168,23 @@ export interface Conversacion {
   lastMessage: string;
   lastMessageTime: string;
   unreadCount: number;
+}
+
+export interface SponsorPlan {
+  id: string;
+  name: string;
+  price: number;
+  features: string[];
+  trialDays?: number;
+}
+
+export interface AdminRequest {
+  id: string;
+  type: 'community_creation' | 'guia_creation';
+  status: 'pending' | 'approved' | 'rejected';
+  details: string;
+  requestedBy: string;
+  date: string;
 }
 
 export interface CommunityStats {

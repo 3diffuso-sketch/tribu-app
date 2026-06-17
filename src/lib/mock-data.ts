@@ -145,6 +145,11 @@ export const mockCommunities: Community[] = [
     tags: ["Deportes", "Naturaleza", "Yoga & Bienestar"],
     isLocked: false,
     requiredStars: 5,
+    status: 'active',
+    merch: [
+      { id: "m-1", name: "Camiseta Oficial", price: 15.00, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&q=80" },
+      { id: "m-2", name: "Gorra Runners", price: 10.00, image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=300&q=80" }
+    ],
     subgroups: [
       { id: "sub-1", name: "Principiantes", description: "Ritmo suave, ideal para empezar." },
       { id: "sub-2", name: "Maratón", description: "Entrenamiento para fondo y medias maratones." }
@@ -160,6 +165,7 @@ export const mockCommunities: Community[] = [
     tags: ["Gastronomía", "Cocina", "Viajes"],
     isLocked: false,
     requiredStars: 5,
+    status: 'active',
     subgroups: [
       { id: "sub-4", name: "Rutas de Tapas", description: "Exploración de bares y tapas los fines de semana." }
     ]
@@ -174,6 +180,7 @@ export const mockCommunities: Community[] = [
     tags: ["Arte & Cultura", "Fotografía", "Naturaleza"],
     isLocked: true,
     requiredStars: 5,
+    status: 'active',
     subgroups: [
       { id: "sub-3", name: "Fotografía Urbana", description: "Salidas fotográficas por el centro de la ciudad." }
     ]
@@ -188,6 +195,7 @@ export const mockCommunities: Community[] = [
     tags: ["Tecnología", "Emprendimiento", "Idiomas"],
     isLocked: true,
     requiredStars: 5,
+    status: 'active',
     subgroups: [
       { id: "sub-5", name: "Desarrollo Web", description: "Grupo sobre React, Next.js y ecosistema web." }
     ]
@@ -206,6 +214,11 @@ export const mockUser: UserProfile = {
   interests: ["Senderismo", "Gastronomía", "Fotografía", "Yoga & Bienestar"],
   eventsAttended: 3,
   joinedDate: "Abril 2025",
+  joinedCommunities: ["com-1", "com-2"],
+  joinedSubgroups: ["sub-1", "sub-4"],
+  lastLeftCommunityDate: "2025-05-10T10:00:00Z",
+  notificationSettings: "all",
+  isCrewRequestPending: false,
 };
 
 export const mockConnections: Connection[] = [
@@ -236,4 +249,32 @@ export const mockConnections: Connection[] = [
     compatibilityScore: 65,
     isLocked: true,
   },
+];
+
+export const mockAdminRequests = [
+  {
+    id: "req-1",
+    type: "community_creation",
+    status: "pending",
+    details: "Nueva comunidad: 'Amantes del Cine'",
+    requestedBy: "Luisa G.",
+    date: "Hace 2 horas"
+  },
+  {
+    id: "req-2",
+    type: "guia_creation",
+    status: "pending",
+    details: "Solicitud para ser Guía",
+    requestedBy: "Carlos M.",
+    date: "Hace 5 horas"
+  }
+];
+
+export const mockRevenueData = [
+  { month: "Ene", amount: 1200 },
+  { month: "Feb", amount: 1800 },
+  { month: "Mar", amount: 2400 },
+  { month: "Abr", amount: 2100 },
+  { month: "May", amount: 3200 },
+  { month: "Jun", amount: 4500 },
 ];

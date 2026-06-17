@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { User, Settings, Award, Calendar, Bell, ChevronRight, LogOut } from "lucide-react";
+import { User, Settings, Award, Calendar, Bell, ChevronRight, LogOut, HelpCircle } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import Link from "next/link";
 
@@ -95,10 +95,17 @@ export default function PerfilPage() {
           </div>
           <ChevronRight size={18} className="text-roots-sand" />
         </Link>
-        <Link href="/notificaciones" className="glass-card p-4 flex items-center justify-between hover:bg-roots-cream/50 transition-colors">
+        <Link href="/perfil/notificaciones" className="glass-card p-4 flex items-center justify-between hover:bg-roots-cream/50 transition-colors">
           <div className="flex items-center gap-3 text-roots-charcoal font-medium">
             <Bell size={18} className="text-roots-red" />
             Preferencias de Notificación
+          </div>
+          <ChevronRight size={18} className="text-roots-sand" />
+        </Link>
+        <Link href="/ayuda" className="glass-card p-4 flex items-center justify-between hover:bg-roots-cream/50 transition-colors">
+          <div className="flex items-center gap-3 text-roots-charcoal font-medium">
+            <HelpCircle size={18} className="text-roots-orange" />
+            Ayuda y Soporte
           </div>
           <ChevronRight size={18} className="text-roots-sand" />
         </Link>

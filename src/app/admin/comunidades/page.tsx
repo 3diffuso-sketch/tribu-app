@@ -8,6 +8,7 @@ import { mockCommunities } from "@/lib/mock-data";
 
 export default function AdminComunidadesPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showCreateSubgroupModal, setShowCreateSubgroupModal] = useState(false);
   const columns = [
     {
       key: "name",
@@ -62,13 +63,22 @@ export default function AdminComunidadesPage() {
             Supervisa las comunidades activas en TribU.
           </p>
         </div>
-        <button 
-          onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 bg-roots-green text-white px-4 py-2.5 rounded-xl font-semibold text-sm hover:bg-roots-green-light transition-colors shadow-sm"
-        >
-          <Plus size={16} />
-          Nueva Comunidad
-        </button>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={() => setShowCreateSubgroupModal(true)}
+            className="flex items-center gap-2 bg-roots-cream text-roots-charcoal border border-roots-sand px-4 py-2.5 rounded-xl font-semibold text-sm hover:bg-roots-sand/50 transition-colors shadow-sm"
+          >
+            <Plus size={16} />
+            Subgrupo
+          </button>
+          <button 
+            onClick={() => setShowCreateModal(true)}
+            className="flex items-center gap-2 bg-roots-green text-white px-4 py-2.5 rounded-xl font-semibold text-sm hover:bg-roots-green-light transition-colors shadow-sm"
+          >
+            <Plus size={16} />
+            Comunidad
+          </button>
+        </div>
       </motion.div>
 
       <motion.div
@@ -119,6 +129,36 @@ export default function AdminComunidadesPage() {
               <div className="flex gap-3">
                 <button onClick={() => setShowCreateModal(false)} className="flex-1 py-3 rounded-xl bg-roots-cream text-roots-charcoal font-semibold text-sm hover:bg-roots-sand/50">Cancelar</button>
                 <button onClick={() => setShowCreateModal(false)} className="flex-1 py-3 rounded-xl bg-roots-green text-white font-semibold text-sm hover:bg-roots-green-light">Crear Comunidad</button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {showCreateSubgroupModal && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-6" style={{ background: "var(--overlay)" }} onClick={() => setShowCreateSubgroupModal(false)}>
+            <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }} onClick={(e) => e.stopPropagation()} className="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl">
+              <h3 className="font-display text-xl font-bold text-roots-charcoal mb-4">Crear Subgrupo</h3>
+              
+              <div className="space-y-4 mb-6">
+                <div>
+                  <label className="block text-sm font-medium text-roots-charcoal mb-1">Comunidad Padre</label>
+                  <select className="w-full bg-roots-cream/50 border border-roots-sand/40 rounded-xl py-2 px-3 text-sm focus:border-roots-green focus:outline-none">
+                    {mockCommunities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-roots-charcoal mb-1">Nombre del Subgrupo</label>
+                  <input type="text" placeholder="Ej. Trail Running" className="w-full bg-roots-cream/50 border border-roots-sand/40 rounded-xl py-2 px-3 text-sm focus:border-roots-green focus:outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-roots-charcoal mb-1">Descripción</label>
+                  <textarea rows={3} className="w-full bg-roots-cream/50 border border-roots-sand/40 rounded-xl py-2 px-3 text-sm focus:border-roots-green focus:outline-none" placeholder="Descripción del subgrupo..."></textarea>
+                </div>
+              </div>
+              
+              <div className="flex gap-3">
+                <button onClick={() => setShowCreateSubgroupModal(false)} className="flex-1 py-3 rounded-xl bg-roots-cream text-roots-charcoal font-semibold text-sm hover:bg-roots-sand/50">Cancelar</button>
+                <button onClick={() => setShowCreateSubgroupModal(false)} className="flex-1 py-3 rounded-xl bg-roots-green text-white font-semibold text-sm hover:bg-roots-green-light">Crear Subgrupo</button>
               </div>
             </motion.div>
           </motion.div>

@@ -19,6 +19,11 @@ export default function CrewDashboard() {
     { id: 2, task: "Moderar comentarios en foro", event: "General" },
   ];
 
+  const eventRequests = [
+    { id: "r1", user: "Ana López", title: "Torneo de Voleibol en la Playa", date: "Próximo mes", votes: 12 },
+    { id: "r2", user: "Carlos Ruiz", title: "Limpieza de la Albufera", date: "Domingo por la mañana", votes: 8 },
+  ];
+
   return (
     <div className="flex flex-col gap-6 px-5">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
@@ -56,7 +61,7 @@ export default function CrewDashboard() {
       </motion.div>
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
-        <h3 className="font-semibold text-roots-charcoal mb-3">Tareas Pendientes</h3>
+        <h3 className="font-semibold text-roots-charcoal mb-3 mt-6">Tareas Pendientes</h3>
         <div className="flex flex-col gap-2">
           {pendingTasks.map((task) => (
             <div key={task.id} className="glass-card p-3 flex items-start gap-3">
@@ -64,6 +69,25 @@ export default function CrewDashboard() {
               <div>
                 <p className="text-sm font-medium text-roots-charcoal leading-tight">{task.task}</p>
                 <p className="text-[10px] text-foreground-muted mt-0.5">{task.event}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <h3 className="font-semibold text-roots-charcoal mb-3 mt-6">Peticiones de Eventos (Usuarios)</h3>
+        <div className="flex flex-col gap-3">
+          {eventRequests.map((req) => (
+            <div key={req.id} className="bg-white border border-roots-sand/50 p-4 rounded-xl shadow-sm flex flex-col gap-3">
+              <div>
+                <div className="flex justify-between items-start mb-1">
+                  <h4 className="font-semibold text-roots-charcoal text-sm leading-tight">{req.title}</h4>
+                  <span className="bg-roots-cream text-roots-charcoal text-[10px] px-2 py-0.5 rounded-full font-bold">{req.votes} votos</span>
+                </div>
+                <p className="text-[11px] text-foreground-muted">Sugerido por: <span className="font-medium text-roots-charcoal">{req.user}</span> • {req.date}</p>
+              </div>
+              <div className="flex gap-2">
+                <button onClick={() => alert("Petición rechazada")} className="flex-1 py-1.5 rounded-lg bg-roots-red/10 text-roots-red font-semibold text-xs hover:bg-roots-red/20 transition-colors">Rechazar</button>
+                <button onClick={() => alert("Petición aprobada. Llevando al creador de eventos...")} className="flex-1 py-1.5 rounded-lg bg-roots-green text-white font-semibold text-xs hover:bg-roots-green/90 transition-colors">Aprobar</button>
               </div>
             </div>
           ))}

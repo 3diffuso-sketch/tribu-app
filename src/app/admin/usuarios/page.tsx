@@ -44,12 +44,12 @@ export default function AdminUsuariosPage() {
       label: "Usuario",
       render: (val: string, row: UserProfile) => (
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-roots-sand/50 flex items-center justify-center text-roots-charcoal font-bold text-xs overflow-hidden">
+          <div className="w-10 h-10 rounded-full bg-roots-sand/50 flex items-center justify-center text-roots-charcoal font-bold text-sm overflow-hidden shadow-sm">
             {row.avatar ? <img src={row.avatar} alt={val} className="w-full h-full object-cover" /> : val.charAt(0)}
           </div>
           <div>
-            <p className="font-medium text-roots-charcoal">{val}</p>
-            <p className="text-[10px] text-foreground-muted">{row.email || 'sin@email.com'}</p>
+            <p className="font-semibold text-roots-charcoal">{val}</p>
+            <p className="text-xs text-foreground-muted">{row.email || 'sin@email.com'}</p>
           </div>
         </div>
       )
@@ -58,7 +58,7 @@ export default function AdminUsuariosPage() {
       key: "role",
       label: "Rol",
       render: (val: UserRole) => (
-        <span className={`px-2 py-1 rounded-md text-[10px] font-semibold uppercase tracking-wider border ${roleColors[val]}`}>
+        <span className={`px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider border ${roleColors[val]}`}>
           {roleIcons[val]}
           {val}
         </span>
@@ -126,15 +126,15 @@ export default function AdminUsuariosPage() {
           searchable={true}
           searchPlaceholder="Buscar por nombre..."
           actions={(row) => (
-            <div className="flex items-center justify-end gap-1">
+            <div className="flex items-center justify-end gap-2">
               <button 
                 onClick={() => alert(`Usuario ${row.name} bloqueado.`)}
-                className="px-2 py-1.5 rounded text-[10px] font-bold bg-roots-red/10 text-roots-red hover:bg-roots-red/20 transition-colors"
+                className="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-roots-red/10 text-roots-red hover:bg-roots-red/20 hover:shadow-sm transition-all"
                 title="Bloquear Usuario"
               >
                 Bloquear
               </button>
-              <button className="p-1.5 rounded-md hover:bg-roots-sand/30 text-foreground-muted transition-colors">
+              <button className="p-1.5 rounded-lg border border-roots-sand/50 hover:bg-roots-sand/30 text-roots-charcoal transition-colors">
                 <MoreVertical size={16} />
               </button>
             </div>
